@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,22 +35,25 @@ export function EditMovieDialog({
   const [poster, setPoster] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(movie.poster);
 
-  const handleImageDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleImageDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setPoster(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
-  };
+  }, []);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setPoster(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    }
-  };
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setPoster(file);
+        setPreviewUrl(URL.createObjectURL(file));
+      }
+    },
+    []
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,54 +109,56 @@ export function EditMovieDialog({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-[1000px] p-0 bg-[#093545] border-none rounded-3xl overflow-hidden">
-        <DialogHeader className="p-8 pb-0">
-          <DialogTitle className="text-4xl font-semibold text-white">
+      <DialogContent className="sm:max-w-[425px] lg:max-w-[90%] xl:max-w-[1000px] p-0 bg-[#093545] border-none rounded-lg overflow-hidden">
+        <DialogHeader className="p-6 pb-0">
+          <DialogTitle className="text-2xl font-semibold text-white">
             Edit movie
           </DialogTitle>
         </DialogHeader>
 
-        <div className="relative p-8">
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
-            <div
-              className={cn(
-                "relative aspect-[3/4] rounded-2xl border-2 border-dashed border-white/20",
-                "flex flex-col items-center justify-center gap-4",
-                "hover:border-white/40 transition-colors cursor-pointer group"
-              )}
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={handleImageDrop}
-            >
-              {previewUrl ? (
-                <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                  <Image
-                    src={previewUrl || "/placeholder.svg"}
-                    alt="Preview"
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-sm">Change image</p>
+        <div className="p-6 max-h-[80vh] overflow-y-auto">
+          <form onSubmit={handleSubmit} className="lg:flex lg:gap-6">
+            <div className="lg:w-1/2 mb-6 lg:mb-0">
+              <div
+                className={cn(
+                  "relative w-full aspect-video lg:aspect-[3/4] rounded-lg border-2 border-dashed border-white/20",
+                  "flex flex-col items-center justify-center gap-4",
+                  "hover:border-white/40 transition-colors cursor-pointer group"
+                )}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleImageDrop}
+              >
+                {previewUrl ? (
+                  <div className="absolute inset-0 rounded-lg overflow-hidden">
+                    <Image
+                      src={previewUrl || "/placeholder.svg"}
+                      alt="Preview"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 425px) 100vw, (max-width: 1000px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <p className="text-white text-sm">Change image</p>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <>
-                  <ArrowDown className="w-8 h-8 text-white/60" />
-                  <p className="text-white/60 text-base">Drop image here</p>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
+                ) : (
+                  <>
+                    <ArrowDown className="w-8 h-8 text-white/60" />
+                    <p className="text-white/60 text-base text-center px-4">
+                      Drop an image here or click to upload
+                    </p>
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                />
+              </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="lg:w-1/2 space-y-6">
               <div>
                 <label
                   htmlFor="title"
@@ -188,7 +193,7 @@ export function EditMovieDialog({
                   required
                 />
               </div>
-              <div className="flex justify-end gap-4 pt-8">
+              <div className="flex justify-end gap-4 pt-4">
                 <Button
                   type="button"
                   variant="outline"
