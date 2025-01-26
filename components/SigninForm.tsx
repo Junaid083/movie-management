@@ -46,15 +46,15 @@ export function SigninForm() {
   }
 
   return (
-    <div className="w-[475px] px-8">
-      <h1 className="text-h1 font-semibold text-white mb-[60px] text-center">Sign in</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="w-full max-w-[475px] px-4 sm:px-8">
+      <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-8 sm:mb-[60px] text-center">Sign in</h1>
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <Input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-base px-6 rounded-lg"
+          className="h-12 sm:h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-sm sm:text-base px-4 sm:px-6 rounded-lg"
           required
         />
         <Input
@@ -62,7 +62,7 @@ export function SigninForm() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-base px-6 rounded-lg"
+          className="h-12 sm:h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-sm sm:text-base px-4 sm:px-6 rounded-lg"
           required
         />
         <div className="flex items-center">
@@ -70,21 +70,21 @@ export function SigninForm() {
             id="rememberMe"
             checked={rememberMe}
             onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-            className="w-5 h-5 border-2 border-white data-[state=checked]:bg-[#20df7f] data-[state=checked]:border-[#20df7f]"
+            className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white data-[state=checked]:bg-[#20df7f] data-[state=checked]:border-[#20df7f]"
           />
-          <label htmlFor="rememberMe" className="ml-3 text-white text-base">
+          <label htmlFor="rememberMe" className="ml-2 sm:ml-3 text-white text-sm sm:text-base">
             Remember me
           </label>
         </div>
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-16 bg-[#20df7f] hover:bg-[#20df7f]/90 text-white text-base font-semibold rounded-lg"
+          className="w-full h-12 sm:h-16 bg-[#20df7f] hover:bg-[#20df7f]/90 text-white text-sm sm:text-base font-semibold rounded-lg"
         >
           {isLoading ? "Signing in..." : "Login"}
         </Button>
       </form>
-      <p className="text-white text-center mt-4">
+      <p className="text-white text-center mt-4 text-sm sm:text-base">
         Don't have an account?{" "}
         <Link href="/signup" className="text-[#20df7f] hover:underline">
           Sign Up

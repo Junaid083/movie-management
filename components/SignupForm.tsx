@@ -58,21 +58,26 @@ export function SignupForm() {
   };
 
   return (
-    <div className="w-[475px] px-8">
-      <h1 className="text-h1 font-semibold text-white mb-[60px] text-center">
+    <div className="w-full max-w-[475px] px-4 sm:px-8">
+      <h1 className="text-3xl sm:text-4xl font-semibold text-white mb-8 sm:mb-[60px] text-center">
         Sign up
       </h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4 sm:space-y-6"
+      >
         <div>
           <Input
             type="text"
             placeholder="Name"
             {...register("name")}
-            className="h-16 bg-[#224957] border-none text-white placeholder:text-[#ffffff99] text-base px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
+            className="h-12 sm:h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-sm sm:text-base px-4 sm:px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
             aria-label="Name"
           />
           {errors.name && (
-            <p className="text-[#ff6b6b] text-sm mt-2">{errors.name.message}</p>
+            <p className="text-[#ff6b6b] text-xs sm:text-sm mt-2">
+              {errors.name.message}
+            </p>
           )}
         </div>
         <div>
@@ -80,11 +85,11 @@ export function SignupForm() {
             type="email"
             placeholder="Email"
             {...register("email")}
-            className="h-16 bg-[#224957] border-none text-white placeholder:text-[#ffffff99] text-base px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
+            className="h-12 sm:h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-sm sm:text-base px-4 sm:px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
             aria-label="Email"
           />
           {errors.email && (
-            <p className="text-[#ff6b6b] text-sm mt-2">
+            <p className="text-[#ff6b6b] text-xs sm:text-sm mt-2">
               {errors.email.message}
             </p>
           )}
@@ -94,11 +99,11 @@ export function SignupForm() {
             type="password"
             placeholder="Password"
             {...register("password")}
-            className="h-16 bg-[#224957] border-none text-white placeholder:text-[#ffffff99] text-base px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
+            className="h-12 sm:h-16 bg-[#224957] border-none text-white placeholder:text-white/60 text-sm sm:text-base px-4 sm:px-6 rounded-lg focus:ring-2 focus:ring-[#20df7f]"
             aria-label="Password"
           />
           {errors.password && (
-            <p className="text-[#ff6b6b] text-sm mt-2">
+            <p className="text-[#ff6b6b] text-xs sm:text-sm mt-2">
               {errors.password.message}
             </p>
           )}
@@ -106,12 +111,12 @@ export function SignupForm() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-16 bg-[#20df7f] hover:bg-[#20df7f]/90 text-white text-base font-semibold rounded-lg transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:ring-[#20df7f] active:translate-y-0.5"
+          className="w-full h-12 sm:h-16 bg-[#20df7f] hover:bg-[#20df7f]/90 text-white text-sm sm:text-base font-semibold rounded-lg transition-colors duration-200 ease-in-out focus:ring-2 focus:ring-offset-2 focus:ring-[#20df7f] active:translate-y-0.5"
         >
           {isLoading ? "Creating Account..." : "Sign Up"}
         </Button>
       </form>
-      <p className="text-white text-center mt-4">
+      <p className="text-white text-center mt-4 text-sm sm:text-base">
         Already have an account?{" "}
         <Link
           href="/signin"

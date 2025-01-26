@@ -5,7 +5,6 @@ import "./globals.css"
 import { Toaster } from "@/components/ui/sonner"
 import { AuthProvider } from "@/providers/AuthProvider"
 import Footer from "@/components/Footer"
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -34,10 +33,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} font-sans antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} font-sans antialiased bg-[#093545]`}
+      >
         <AuthProvider>
-          {children}
-          {/* <Footer /> */}
+          <main className="min-h-screen flex flex-col">{children}
+            <Footer />
+          </main>
         </AuthProvider>
         <Toaster />
       </body>
