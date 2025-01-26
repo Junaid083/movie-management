@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -35,25 +35,22 @@ export function EditMovieDialog({
   const [poster, setPoster] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(movie.poster);
 
-  const handleImageDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleImageDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setPoster(file);
       setPreviewUrl(URL.createObjectURL(file));
     }
-  }, []);
+  };
 
-  const handleImageChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        setPoster(file);
-        setPreviewUrl(URL.createObjectURL(file));
-      }
-    },
-    []
-  );
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setPoster(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +67,7 @@ export function EditMovieDialog({
         });
         const uploadData = await uploadResponse.json();
         if (!uploadData.success) throw new Error("Failed to upload image");
-        posterUrl = `/uploads/${uploadData.filename}`;
+        posterUrl = uploadData.fileUrl;
       }
 
       const response = await fetch(`/api/movies/${movie._id}`, {

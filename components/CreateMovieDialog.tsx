@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -37,23 +37,20 @@ export function CreateMovieDialog({ onSuccess }: CreateMovieDialogProps) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value, files } = e.target;
-      if (name === "poster" && files && files[0]) {
-        setFormData((prev) => ({
-          ...prev,
-          poster: files[0],
-          previewUrl: URL.createObjectURL(files[0]),
-        }));
-      } else {
-        setFormData((prev) => ({ ...prev, [name]: value }));
-      }
-    },
-    []
-  );
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    if (name === "poster" && files && files[0]) {
+      setFormData((prev) => ({
+        ...prev,
+        poster: files[0],
+        previewUrl: URL.createObjectURL(files[0]),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
 
-  const handleImageDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+  const handleImageDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -63,74 +60,68 @@ export function CreateMovieDialog({ onSuccess }: CreateMovieDialogProps) {
         previewUrl: URL.createObjectURL(file),
       }));
     }
-  }, []);
+  };
 
-  const handleSubmit = useCallback(
-    async (e: React.FormEvent) => {
-      e.preventDefault();
-      if (!formData.poster) {
-        toast.error("Please upload an image");
-        return;
-      }
-      setIsLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.poster) {
+      toast.error("Please upload an image");
+      return;
+    }
+    setIsLoading(true);
 
-      try {
-        const data = new FormData();
-        data.append("file", formData.poster);
-        const uploadResponse = await fetch("/api/upload", {
-          method: "POST",
-          body: data,
-        });
-        const uploadData = await uploadResponse.json();
-        if (!uploadData.success) throw new Error("Failed to upload image");
+    try {
+      const data = new FormData();
+      data.append("file", formData.poster);
+      const uploadResponse = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
+      const uploadData = await uploadResponse.json();
+      if (!uploadData.success) throw new Error("Failed to upload image");
 
-        const response = await fetch("/api/movies", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: formData.title,
-            publishingYear: Number.parseInt(formData.publishingYear),
-            poster: `/uploads/${uploadData.filename}`,
-          }),
-        });
+      const response = await fetch("/api/movies", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: formData.title,
+          publishingYear: Number.parseInt(formData.publishingYear),
+          poster: uploadData.fileUrl,
+        }),
+      });
 
-        if (!response.ok) throw new Error("Failed to create movie");
+      if (!response.ok) throw new Error("Failed to create movie");
 
-        toast.success("Movie created successfully");
-        setOpen(false);
-        onSuccess();
-        setFormData(initialFormData);
-      } catch (error) {
-        console.error("Error creating movie:", error);
-        toast.error(
-          error instanceof Error ? error.message : "Failed to create movie"
-        );
-      } finally {
-        setIsLoading(false);
-      }
+      toast.success("Movie created successfully");
+      setOpen(false);
+      onSuccess();
+      setFormData(initialFormData);
+    } catch (error) {
+      console.error("Error creating movie:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Failed to create movie"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const inputFields = [
+    {
+      id: "title",
+      name: "title",
+      type: "text",
+      placeholder: "Enter movie title",
+      label: "Title",
     },
-    [formData, onSuccess]
-  );
-
-  const inputFields = useMemo(
-    () => [
-      {
-        id: "title",
-        name: "title",
-        type: "text",
-        placeholder: "Enter movie title",
-        label: "Title",
-      },
-      {
-        id: "year",
-        name: "publishingYear",
-        type: "number",
-        placeholder: "Enter publishing year",
-        label: "Publishing year",
-      },
-    ],
-    []
-  );
+    {
+      id: "year",
+      name: "publishingYear",
+      type: "number",
+      placeholder: "Enter publishing year",
+      label: "Publishing year",
+    },
+  ];
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
