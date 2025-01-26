@@ -8,6 +8,13 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1440px",
+      },
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -43,31 +50,49 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        "background-dark": "var(--background-dark)",
-        "input-dark": "var(--input-dark)",
-        "card-dark": "var(--card-dark)",
-      },
-      fontFamily: {
-        sans: ["var(--font-geist-sans)", "var(--font-montserrat)", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
-      },
-      fontSize: {
-        h1: ["4rem", { lineHeight: "5rem" }],
-        h2: ["3rem", { lineHeight: "3.5rem" }],
-        h3: ["2rem", { lineHeight: "2.5rem" }],
-        h4: ["1.5rem", { lineHeight: "2rem" }],
-        h5: ["1.25rem", { lineHeight: "1.5rem" }],
-        h6: ["1rem", { lineHeight: "1.5rem" }],
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontSize: {
+        h1: ["64px", { lineHeight: "80px", fontWeight: 600 }],
+        h2: ["48px", { lineHeight: "56px", fontWeight: 600 }],
+        h3: ["32px", { lineHeight: "40px", fontWeight: 600 }],
+        h4: ["24px", { lineHeight: "32px", fontWeight: 700 }],
+        h5: ["20px", { lineHeight: "24px", fontWeight: 700 }],
+        h6: ["16px", { lineHeight: "24px", fontWeight: 700 }],
+        "body-lg": ["20px", { lineHeight: "32px" }],
+        "body-base": ["16px", { lineHeight: "24px" }],
+        "body-sm": ["14px", { lineHeight: "24px" }],
+        "body-xs": ["12px", { lineHeight: "24px" }],
+        caption: ["14px", { lineHeight: "16px" }],
+      },
+      spacing: {
+        container: "120px",
+      },
+      maxWidth: {
+        container: "1440px",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+} satisfies Config
 
 export default config
 
