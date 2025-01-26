@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 :root {
+  --primary: #31d0aa;
+  --error: #ff6b6b;
+  --background-dark: #0d2436;
+  --input-dark: #1f3a4f;
+  --card-dark: #1f3a4f;
+
   --background: #ffffff;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: var(--background-dark);
     --foreground: #ededed;
   }
 }
@@ -17,5 +23,32 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer base {
+  h1 {
+    @apply text-h1 font-semibold;
+  }
+  h2 {
+    @apply text-h2 font-semibold;
+  }
+  h3 {
+    @apply text-h3 font-semibold;
+  }
+  h4 {
+    @apply text-h4 font-bold;
+  }
+  h5 {
+    @apply text-h5 font-bold;
+  }
+  h6 {
+    @apply text-h6 font-bold;
+  }
+}
+
+@layer utilities {
+  .grid-layout {
+    @apply grid grid-cols-12 gap-6 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+}
+
