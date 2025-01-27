@@ -3,10 +3,10 @@ import { S3Client } from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: process.env.A_REGION,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    accessKeyId: process.env.A_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.A_SECRET_ACCESS_KEY!,
   },
 })
 
@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const upload = new Upload({
       client: s3Client,
       params: {
-        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Bucket: process.env.A_S3_BUCKET_NAME,
         Key: filename,
         Body: buffer,
         ContentType: file.type,
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     await upload.done()
 
-    const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${filename}`
+    const fileUrl = `https://${process.env.A_S3_BUCKET_NAME}.s3.${process.env.A_REGION}.amazonaws.com/${filename}`
     return NextResponse.json({ success: true, filename: filename, fileUrl: fileUrl })
   } catch (error) {
     console.error("Error uploading file:", error)
